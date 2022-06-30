@@ -1,17 +1,3 @@
-
-//représentation d'un produit
-class Product {
-    constructor(jsonProduct){
-        this.colors = jsonProduct.colors;
-        this._id = jsonProduct._id;
-        this.name = jsonProduct.name;
-        this.price = jsonProduct.price;
-        this.imageUrl = jsonProduct.imageUrl;
-        this.description = jsonProduct.description;
-        this.altTxt = jsonProduct.altTxt;
-    }
-}
-
 //fonction pour ajouter les éléments couleurs dans le menu déroulant
 function addOption(selectbox, text, value){
     let optn = document.createElement("option");
@@ -24,19 +10,59 @@ let str = window.location.href;
 let url = new URL(str);
 let id = url.searchParams.get("_id");
 
+//récupérer la couleur sélectionnée
+function getColor(){
+    //cibler l'élément de selection colors
+    let colorSelectionList = document.getElementById('colors');
+
+    //liste des options
+    let colorList = colorSelectionList.options;
+
+    //couleur sélectionnée, retourne un numéro d'index
+    let selectedColorIndex = colorList.selectedIndex;
+
+    //valeur de la couleur sélectionnée
+    let colorToSend = colorList[selectedColorIndex].value;
+    return colorToSend;
+}
 
 //récupérer le produit et insertion des données
 fetch("http://localhost:3000/api/products/" + id)
 .then (data => data.json())
 .then (jsonProduct => {
     let product = new Product(jsonProduct);
-    //voir si on peut pas refactoriser les deux lignes suivantes:
-    document.querySelector('h1').innerText = product.name;
-    document.querySelector('title').innerText = product.name;
+    
+    //insérer le nom du produit dans h1 et dans <title> sans utiliser innerText
 
-    document.getElementById('price').innerText = product.price;
-    document.getElementById('description').innerText = product.description;
-    document.querySelector('article div').innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
+    //cibler le h1
+    let h1 = document.querySelector('.item__content h1');
+    //attribuer name ça marche!!!
+    h1.textContent += product.name;
+
+    //cibler le <title>
+    let title = document.querySelector('title');
+    //attribuer   
+    title.textContent = product.name;
+    
+    //cibler la balise prix
+    let priceTag = document.getElementById('price');
+    //attribuer
+    priceTag.textContent = product.price;
+    
+
+    //cibler la balise description
+    let descriptionTag = document.getElementById('description');
+    descriptionTag.textContent = product.description;
+
+    //créer un élément image du produit avec ses attributs src et alt
+    let imageProduct = document.createElement('img');
+    imageProduct.setAttribute('src', product.imageUrl);
+    imageProduct.setAttribute('alt', product.altTxt);
+    
+    //cibler le parent de l'image produit et coller l'image dedans
+    let imageContainer = document.querySelector('article .item__img');
+    imageContainer.appendChild(imageProduct);
+
     //ajouter le array de couleurs sous forme d'<option>
     for (let i=0; i < product.colors.length; i++){
         addOption(document.getElementById('colors'), product.colors[i], product.colors[i]);
@@ -47,18 +73,34 @@ fetch("http://localhost:3000/api/products/" + id)
 });
 
 //ecouter l'évènement clic sur "ajouter au panier" et envoyer les données au localStorage
-
 let addButton = document.querySelector("#addToCart");
 addButton.addEventListener('click', function(){
+
+    //variables qui constitueront le tableau choices
+    let quantity = document.getElementById('quantity').value;
+
+    //la couleur est renvoyée par une fonction
+    let color = getColor();
+
     const choices = {
         'id' : id,
-        'quantity' : document.getElementById('quantity').value,
-        'color'  : document.getElementById('colors').options[document.getElementById('colors').selectedIndex].value
-    }
+        'quantity' : quantity,
+        'color'  : color
+    };
     let choicesStrng = JSON.stringify(choices);
     localStorage.setItem('usrChoice', choicesStrng);
-    console.log(choicesJSON);
-})
+    console.log(choicesStrng);
+    
+});
 
-let check = localStorage.getItem('usrChoice');
-let choicesJSON = JSON.parse(check);
+//stocker un article
+class cartItem {
+    constructor (id, quantity, color){
+        this.itemId = id;
+        this.itemQantity = quantity;
+        this.itemColor =  color;
+        this.getId = function(){
+            return this.itemId;
+        }
+    }
+}
