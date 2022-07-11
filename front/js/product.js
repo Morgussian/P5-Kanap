@@ -24,6 +24,7 @@ function getColor(){
     //valeur de la couleur sélectionnée
     let colorToSend = colorList[selectedColorIndex].value;
     return colorToSend;
+    
 }
 
 //récupérer le produit et insertion des données
@@ -36,7 +37,7 @@ fetch("http://localhost:3000/api/products/" + id)
 
     //cibler le h1
     let h1 = document.querySelector('.item__content h1');
-    //attribuer name ça marche!!!
+    //attribuer name
     h1.textContent += product.name;
 
     //cibler le <title>
@@ -76,31 +77,31 @@ fetch("http://localhost:3000/api/products/" + id)
 let addButton = document.querySelector("#addToCart");
 addButton.addEventListener('click', function(){
 
-    //variables qui constitueront le tableau choices
-    let quantity = document.getElementById('quantity').value;
-
+    //variables qui constitueront le tableau choice
+    let choice = {};
     //la couleur est renvoyée par une fonction
     let color = getColor();
+    
+    //quantity est transformé en entiers naturels
+    let quantity = parseInt(document.getElementById('quantity').value);
 
-    const choices = {
+    choice = {
+        //id est déjà défini ligne 11 avec searchParams
         'id' : id,
         'quantity' : quantity,
         'color'  : color
     };
-    let choicesStrng = JSON.stringify(choices);
-    localStorage.setItem('usrChoice', choicesStrng);
-    console.log(choicesStrng);
-    
+    if(choice.quantity == 0){
+        alert ('Sélectionnez une quantité.');
+        return;
+    }
+    if(choice.color == ""){
+        alert ('Sélectionnez une couleur.');
+        return;
+    }
+    addToCart(choice);
+    alert ('Sélection enregistrée.');
 });
 
-//stocker un article
-class cartItem {
-    constructor (id, quantity, color){
-        this.itemId = id;
-        this.itemQantity = quantity;
-        this.itemColor =  color;
-        this.getId = function(){
-            return this.itemId;
-        }
-    }
-}
+
+
