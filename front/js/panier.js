@@ -32,11 +32,10 @@ function addToCart(item){
     saveCart(listProducts);
 }
 
-//prix d'un article par sa quantité
-function totalPrice(product){
-    let unitPrice = parseInt(product.price);
-    let number = product.quantity;
-    return unitPrice * number;
+
+//prix d'un produit par sa quantité
+function itemPrice(product){
+    return product.price * product.quantity;
 }
 
 //prix total du panier
@@ -44,7 +43,7 @@ function cartPrice(){
     let listProducts = getCart();
     let total = 0;
     for (let product of listProducts){
-        total += totalPrice(product);
+        total += itemPrice(product);
     }
     return total;
 }

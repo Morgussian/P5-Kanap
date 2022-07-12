@@ -5,10 +5,12 @@
 
 function insertToCart(){
     let cart = getCart();
-    
+
+     
     for (let product of cart){
 
         //récupération des éléments "product.X" provenant du panier: couleur, quantité
+
         //article
         let article = document.createElement('article');
         article.setAttribute('class', 'cart__item');
@@ -24,6 +26,19 @@ function insertToCart(){
         input.setAttribute('max', '100');
         input.setAttribute('value', product.quantity);
 
+        //quantité d'articles dans le panier mais pas si on modifie les inputs dans la page cart.html
+        function totalCartProducts(){
+        let cart = getCart();
+        let total = 0;
+        for(let product of cart){
+            total += product.quantity;
+            input.addEventListener('change', function(){
+                total = this.value;
+            });
+        }
+        return total;
+        }
+            
         //couleur choisie
         let color = document.createElement('p');
         color.textContent += product.color;
@@ -85,6 +100,7 @@ function insertToCart(){
             quantity.setAttribute('class', 'cart__item__content__settings__quantity');
 
             let number = document.createElement('p');
+            number.textContent = 'Qté : '
 
             quantity.appendChild(number);
             quantity.appendChild(input);
@@ -97,27 +113,29 @@ function insertToCart(){
             suppression.setAttribute('class', 'cart__item__content__settings__delete');
 
             let deleteButton = document.createElement('p');
+            deleteButton.textContent = 'Supprimer';
             deleteButton.setAttribute('class', 'deleteItem');
-
+            
             //insérer le bouton dans son container
             suppression.appendChild(deleteButton);
 
+            //suppression d'un item du panier mais ça marche pas
+            remove(product);
+
             //mettre suppression dans réglages
             settings.appendChild(suppression);
+        });
+        //insérer l'article généré dans la section cart_items
+        let cartItems = document.getElementById('cart__items');
+        cartItems.appendChild(article);
 
-            //pour voir apparaître l'article généré mais ça marche pas
-            let cartItems = document.getElementById('cart__items');
-            cartItems.appendChild(article);
-            
-        })
         
     }
 }
-        
 
-    
-        
-    
+
 
 insertToCart();
 
+totalQuantity.textContent = totalCartProducts();
+totalPrice.textContent = cartPrice();
