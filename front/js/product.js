@@ -48,7 +48,7 @@ fetch("http://localhost:3000/api/products/" + id)
     //cibler la balise prix
     let priceTag = document.getElementById('price');
     //attribuer
-    priceTag.textContent = product.price;
+    priceTag.textContent = product.price + ' ';
     
 
     //cibler la balise description

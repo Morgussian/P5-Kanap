@@ -19,6 +19,7 @@ function insertToCart(){
 
         //Quantité dans l'input
         let input = document.createElement('input');
+        
         input.setAttribute('type', 'number');
         input.setAttribute('class', 'itemQuantity');
         input.setAttribute('name', 'itemQuantity');
@@ -26,19 +27,14 @@ function insertToCart(){
         input.setAttribute('max', '100');
         input.setAttribute('value', product.quantity);
 
-        //quantité d'articles dans le panier mais pas si on modifie les inputs dans la page cart.html
-        function totalCartProducts(){
-        let cart = getCart();
-        let total = 0;
-        for(let product of cart){
-            total += product.quantity;
+        //si la quantité change mais ça marche pas
+        function changeQuantity(){
             input.addEventListener('change', function(){
-                total = this.value;
+                addToCart();
             });
         }
-        return total;
-        }
-            
+        
+        
         //couleur choisie
         let color = document.createElement('p');
         color.textContent += product.color;
@@ -65,7 +61,7 @@ function insertToCart(){
             let name = document.createElement('h2');
             name.textContent += product.name;
             let price = document.createElement('p');
-            price.textContent += product.price;
+            price.textContent += product.price + ' \u20AC';
 
             //ajouter à article
             article.appendChild(imgContainer);
@@ -137,5 +133,30 @@ function insertToCart(){
 
 insertToCart();
 
-totalQuantity.textContent = totalCartProducts();
+//quantité d'articles dans le panier mais pas si on modifie les inputs dans la page cart.html
+function totalCartProducts(){
+    let cart = getCart();
+    let total = 0;
+    for(let product of cart){
+        total += product.quantity;
+           
+    }
+    return total;
+}
+
+//prix total du panier ça marche pas
+function cartPrice(){
+    let listProducts = getCart();
+    let total = 0;
+    for (let product of listProducts){
+        total += product.quantity * product.price;
+    }
+    return total;
+}
+
+let totalQuantity = document.getElementById('totalQuantity');
+totalQuantity.textContent += totalCartProducts();
+let totalPrice = document.getElementById('totalPrice');
 totalPrice.textContent = cartPrice();
+
+console.log(getCart());
