@@ -13,19 +13,17 @@ function getCart(){
     }
 }
 
-//ajoute un produit au panier
+//ajoute un produit au panier 
 function addToCart(item){
 
     //récupérer le panier
     let listProducts = getCart();
 
-    //vérifier si le produit est déjà dans le panier
-    let alreadyInCart = listProducts.find(p => p.id == item.id);
-    
-    //avec la même couleur
-    let colorAlreadyInCart = listProducts.find(p => p.color == item.color);
-    if (alreadyInCart != undefined && colorAlreadyInCart != undefined){
-        alreadyInCart.quantity = alreadyInCart.quantity + item.quantity;
+    //vérifier si le produit est déjà dans le panier avec la même couleur
+    let colorAlreadyInCart = listProducts.find(p => p.id == item.id && p.color === item.color);
+
+    if (colorAlreadyInCart != undefined){
+        colorAlreadyInCart.quantity += item.quantity;
     }else{
         listProducts.push(item);
     }
@@ -33,8 +31,13 @@ function addToCart(item){
 }
 
 //retirer un produit du panier ça marche pas
-function remove(item){
-    let listProducts = getCart();
-    listProducts = listProducts.filter(p => p.id != item.id);
-    saveCart(listProducts);
+// function remove(item){
+//     let listProducts = getCart();
+//     listProducts = listProducts.filter(p => p.id != item.id && p.color != item.color);
+//     saveCart(listProducts);
+// }
+function remove(btn){
+    let articleToRemove = btn.closest('toRemove');
+    localStorage.removeItem(articleToRemove);
+    
 }

@@ -28,12 +28,13 @@ function insertToCart(){
         input.setAttribute('value', product.quantity);
 
         //si la quantité change mais ça marche pas
-        function changeQuantity(){
-            input.addEventListener('change', function(){
-                addToCart();
-            });
-        }
-        
+        // function changeQuantity(input){
+        //     input.addEventListener('change', function(){
+        //         product.quantity = input.value;
+        //         addToCart();
+        //     });
+        // }
+        // changeQuantity(input);
         
         //couleur choisie
         let color = document.createElement('p');
@@ -116,7 +117,12 @@ function insertToCart(){
             suppression.appendChild(deleteButton);
 
             //suppression d'un item du panier mais ça marche pas
-            remove(product);
+            deleteButton.addEventListener('click', function(){
+                article.dataset.id = 'toRemove';
+                article.dataset.color = 'toRemove';
+                remove(deleteButton);
+            });
+            
 
             //mettre suppression dans réglages
             settings.appendChild(suppression);
@@ -155,8 +161,8 @@ function cartPrice(){
 }
 
 let totalQuantity = document.getElementById('totalQuantity');
-totalQuantity.textContent += totalCartProducts();
+totalQuantity.textContent = totalCartProducts();
+
 let totalPrice = document.getElementById('totalPrice');
 totalPrice.textContent = cartPrice();
 
-console.log(getCart());

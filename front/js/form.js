@@ -4,7 +4,7 @@ let firstName = document.querySelector('#firstName');
 //ce regexp peut servir pour les noms, adresses et villes
 let nameAdressCityReg = new RegExp('^[a-zA-Z-]+$');
 
-//vérifier un champ hors email
+//vérifier un champ (hors email) ça marche pas
 function fieldCheck(input){
     let msg = document.querySelector('form p');
     if(!nameAdressCityReg.test(input)) 

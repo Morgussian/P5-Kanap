@@ -24,7 +24,6 @@ function getColor(){
     //valeur de la couleur sélectionnée
     let colorToSend = colorList[selectedColorIndex].value;
     return colorToSend;
-    
 }
 
 //récupérer le produit et insertion des données
@@ -37,15 +36,16 @@ fetch("http://localhost:3000/api/products/" + id)
 
     //cibler le h1
     let h1 = document.querySelector('.item__content h1');
+    let text = document.createTextNode(product.name);
     //attribuer name
-    h1.textContent += product.name;
+    h1.appendChild(text);
 
     //cibler le <title>
     let title = document.querySelector('title');
-    //attribuer   
+    //attribuer (appendChild text ça marche pas).
     title.textContent = product.name;
     
-    //cibler la balise prix
+    //cibler la balise prix (appenchild ça marche pas laisse tomber)
     let priceTag = document.getElementById('price');
     //attribuer
     priceTag.textContent = product.price + ' ';
@@ -77,7 +77,7 @@ fetch("http://localhost:3000/api/products/" + id)
 let addButton = document.querySelector("#addToCart");
 addButton.addEventListener('click', function(){
 
-    //variables qui constitueront le tableau choice
+    //variables qui constitueront l'objet choice
     let choice = {};
     //la couleur est renvoyée par une fonction
     let color = getColor();
@@ -98,9 +98,11 @@ addButton.addEventListener('click', function(){
     if(choice.color == ""){
         alert ('Sélectionnez une couleur.');
         return;
-    }
+    }else{
     addToCart(choice);
     alert ('Sélection enregistrée.');
+    
+    }
 });
 
 
