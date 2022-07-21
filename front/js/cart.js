@@ -53,9 +53,10 @@ function insertToCart(){
 
             let name = document.createElement('h2');
             name.textContent += product.name;
+            
             let price = document.createElement('p');
-            price.textContent += product.price + ' \u20AC';
-
+            price.textContent = product.price + ' \u20AC';
+            
             //ajouter à article
             article.appendChild(imgContainer);
 
@@ -115,13 +116,18 @@ function insertToCart(){
 
             //mettre suppression dans réglages
             settings.appendChild(suppression);
+
+            //insérer le prix total mais ça marche pas
+            let totalPrice = document.getElementById('totalPrice');
+            totalPrice.textContent = cartPrice();
         });
         //insérer l'article généré dans la section cart_items
         let cartItems = document.getElementById('cart__items');
         cartItems.appendChild(article);
 
+        //changer la quantité ça marche pas
         input.addEventListener('change', function(){
-            changeQuantity(this);
+            changeQuantity();
         });
         
     }
@@ -147,7 +153,15 @@ function cartPrice(){
     let listProducts = getCart();
     let total = 0;
     for (let product of listProducts){
-        total += product.quantity * product.price;
+        let quantityOf = product.quantity;
+        fetch("http://localhost:3000/api/products/" + product.id)
+        .then (data => data.json())
+        .then (jsonProduct => {
+            product = new Product(jsonProduct);
+            total += quantityOf * product.price;
+            
+        });
+    
     }
     return total;
 }
@@ -157,6 +171,5 @@ totalQuantity.textContent = totalCartProducts();
 
 
 
-let totalPrice = document.getElementById('totalPrice');
-totalPrice.textContent = cartPrice();
+
 
