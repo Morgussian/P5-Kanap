@@ -27,14 +27,6 @@ function insertToCart(){
         input.setAttribute('max', '100');
         input.setAttribute('value', product.quantity);
 
-        //si la quantité change mais ça marche pas
-        // function changeQuantity(input){
-        //     input.addEventListener('change', function(){
-        //         product.quantity = input.value;
-        //         addToCart();
-        //     });
-        // }
-        // changeQuantity(input);
         
         //couleur choisie
         let color = document.createElement('p');
@@ -113,16 +105,13 @@ function insertToCart(){
             deleteButton.textContent = 'Supprimer';
             deleteButton.setAttribute('class', 'deleteItem');
             
+            //ecouter le btn
+            deleteButton.addEventListener('click', function(){
+                kill(deleteButton);
+            });
+
             //insérer le bouton dans son container
             suppression.appendChild(deleteButton);
-
-            //suppression d'un item du panier mais ça marche pas
-            deleteButton.addEventListener('click', function(){
-                article.dataset.id = 'toRemove';
-                article.dataset.color = 'toRemove';
-                remove(deleteButton);
-            });
-            
 
             //mettre suppression dans réglages
             settings.appendChild(suppression);
@@ -131,6 +120,9 @@ function insertToCart(){
         let cartItems = document.getElementById('cart__items');
         cartItems.appendChild(article);
 
+        input.addEventListener('change', function(){
+            changeQuantity(this);
+        });
         
     }
 }
@@ -162,6 +154,8 @@ function cartPrice(){
 
 let totalQuantity = document.getElementById('totalQuantity');
 totalQuantity.textContent = totalCartProducts();
+
+
 
 let totalPrice = document.getElementById('totalPrice');
 totalPrice.textContent = cartPrice();
