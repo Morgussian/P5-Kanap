@@ -68,7 +68,7 @@ function changeQuantity(e){
     let value = input.value;
 
     //déclarer l'article correspondant à l'input visé
-    let article = input.closest('.cart__item');
+    let article = e.closest('.cart__item');
     let id = article.dataset.id;
     let color = article.dataset.color;
 
@@ -77,7 +77,7 @@ function changeQuantity(e){
     //chercher ce que ça veut dire
     items.forEach((item, index) => {
         if(item.id == id && item.color == color){
-            item[index].quantity = value;
+            item[index].quantity == value;
         }
     });
     saveCart(items);
