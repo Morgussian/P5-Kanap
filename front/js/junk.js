@@ -42,3 +42,5 @@ function addRegexListenerToFormInputs() {
     check(form.email, mailReg);
 }
 addRegexListenerToFormInputs()
+
+

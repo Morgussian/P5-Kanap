@@ -1,8 +1,7 @@
 
 
-
+/**@function insertToCart */
 //créér des éléments dans le DOM comme ce qui est commenté dans cart.html
-
 function insertToCart(){
     let cart = getCart();
 
@@ -27,7 +26,8 @@ function insertToCart(){
         input.setAttribute('max', '100');
         input.setAttribute('value', product.quantity);
 
-        
+        input.addEventListener('change', changeQuantity);
+
         //couleur choisie
         let color = document.createElement('p');
         color.textContent += product.color;
@@ -126,9 +126,7 @@ function insertToCart(){
         cartItems.appendChild(article);
 
         //changer la quantité ça marche pas
-        input.addEventListener('change', function(){
-            changeQuantity();
-        });
+        
         
     }
 }
@@ -137,6 +135,7 @@ function insertToCart(){
 
 insertToCart();
 
+/**@function totalCartProducts */
 //quantité d'articles dans le panier mais pas si on modifie les inputs dans la page cart.html
 function totalCartProducts(){
     let cart = getCart();
@@ -148,6 +147,7 @@ function totalCartProducts(){
     return total;
 }
 
+/**@function cartPrice */
 //prix total du panier ça marche pas
 function cartPrice(){
     let listProducts = getCart();

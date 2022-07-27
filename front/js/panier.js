@@ -4,6 +4,7 @@ function saveCart(listProducts){
     localStorage.setItem('listProducts', JSON.stringify(listProducts));
 }
 
+/**@function getCart */
 //récupérer le panier
 function getCart(){
     let cartStrng = localStorage.getItem('listProducts');
@@ -66,10 +67,11 @@ function changeQuantity(e){
 
     //renvoie l'élément HTML (on vise ici <input>)
     let input = e.target;
+    
     let value = input.value;
-
+    console.log(value);
     //déclarer l'article correspondant à l'input visé
-    let article = e.closest('.cart__item');
+    let article = input.closest('.cart__item');
     let id = article.dataset.id;
     let color = article.dataset.color;
 
@@ -78,7 +80,7 @@ function changeQuantity(e){
     //chercher ce que ça veut dire
     items.forEach((item, index) => {
         if(item.id == id && item.color == color){
-            item[index].quantity == value;
+            item[index].quantity = value;
         }
     });
     saveCart(items);
