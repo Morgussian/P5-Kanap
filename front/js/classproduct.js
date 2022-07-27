@@ -1,3 +1,4 @@
+/**@class Product */
 //représentation d'un produit
 class Product {
     constructor(jsonProduct){

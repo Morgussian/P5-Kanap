@@ -1,3 +1,4 @@
+/**@function saveCart */
 //sauvegarder localement la liste des produits
 function saveCart(listProducts){
     localStorage.setItem('listProducts', JSON.stringify(listProducts));
@@ -12,7 +13,7 @@ function getCart(){
         return JSON.parse(cartStrng);
     }
 }
-
+/**@function saveToCart */
 //ajoute un produit au panier 
 function addToCart(item){
 
@@ -29,7 +30,7 @@ function addToCart(item){
     }
     saveCart(listProducts);
 }
-
+/**@param function btn */
 //retirer un produit du panier 
 function kill(btn){
 
