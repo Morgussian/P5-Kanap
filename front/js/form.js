@@ -72,22 +72,26 @@ form.addEventListener('submit', async function(e){
                 return product.id;
             })
         })
-    });
+    })
 
     //récupérer un orderId en réponse mais ça marche pas
-    let fetchOrderId = fetch('http://localhost:3000/api/products/order')
+    //let fetchOrderId = fetch('http://localhost:3000/api/products/order')
     .then(function(response){
+
       return response.json()
+
     }).then(function(data){
-       orderId = data.orderId;
-       return orderId.value;
+
+        orderId = data.orderId;
+       
+        RedirectionJavascript(orderId);
   });   
     
     
     //redirection vers la page confirmation ça marche plus
-    RedirectionJavascript(fetchOrderId);
-    let result = await response.json();
-    alert(result.message);
+    
+    // 
+    // 
 });
 
 //valider le prénom
