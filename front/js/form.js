@@ -69,15 +69,17 @@ form.addEventListener('submit', async function(e){
     return response.json()
 
     }).then(function(data){
-
-        orderId = data.orderId;
-       
-        RedirectionJavascript(orderId);
+        if(validAllFields()){
+            orderId = data.orderId;
+            RedirectionJavascript(orderId);
+        }else{
+            alert('Tous les champs n\'ont pas été correctement saisis'); 
+        }
   });   
 });
 
 //'blur' sur un évènement c'est quand le focus se met sur un autre élément...
-//pas besoin de parenthèses???WTF
+//pas besoin de parenthèses sur les fonctions???WTF
 form.firstName.addEventListener('blur', checkFirstName);
 form.lastName.addEventListener('blur', checkLastName);
 form.city.addEventListener('blur', checkCity);
@@ -89,9 +91,12 @@ form.email.addEventListener('blur', checkEmail);
 function checkFirstName(){
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
     firstNameErrorMsg.innerText = '';
-        
+    
     if(!nameCityReg.test(form.firstName.value)) {
         firstNameErrorMsg.innerText = 'Champ invalide';
+        
+    }else{
+        
     }
 }
 
@@ -100,9 +105,11 @@ function checkFirstName(){
 function checkLastName(){
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
     lastNameErrorMsg.innerText = '';
-        
+       
     if(!nameCityReg.test(form.lastName.value)) {
         lastNameErrorMsg.innerText = 'Champ invalide';
+    }else{
+        
     }
 }
 
@@ -111,9 +118,11 @@ function checkLastName(){
 function checkCity(){
     const cityErrorMsg = document.getElementById('cityErrorMsg');
     cityErrorMsg.innerText = '';
-        
+       
     if(!nameCityReg.test(form.city.value)) {
         cityErrorMsg.innerText = 'Champ invalide';
+    }else{
+        
     }
 }
 
@@ -122,9 +131,11 @@ function checkCity(){
 function checkAddress(){
     const addressErrorMsg = document.getElementById('addressErrorMsg');
     addressErrorMsg.innerText = '';
-        
+      
     if(!addressReg.test(form.address.value)) {
         addressErrorMsg.innerText = 'Champ invalide';
+    }else{
+        
     }
 }
 
@@ -133,9 +144,11 @@ function checkAddress(){
 function checkEmail(){
     const emailErrorMsg = document.getElementById('emailErrorMsg');
     emailErrorMsg.innerText = '';
-        
+     
     if(!mailReg.test(form.email.value)) {
         emailErrorMsg.innerText = 'Champ invalide';
+    }else{
+        
     }
 }
 
@@ -150,11 +163,12 @@ form.addEventListener('change', function() {
     )
 })
 
-
+/**@function validAllFields */
 function validAllFields() {
-    if(checkFirstName() && checkLastName() && checkCity() && checkAddress() && checkEmail()){
+    if(firstNameErrorMsg.innerText == '' && lastNameErrorMsg.innerText == '' && cityErrorMsg.innerText == '' && addressErrorMsg.innerText == '' && emailErrorMsg.innerText == ''){
         return true;
     }else{
         return false;
     }
 }
+
