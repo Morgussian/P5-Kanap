@@ -62,6 +62,7 @@ function kill(btn){
     }
 }
 
+/**@function changeQuantity */
 //si la quantité change mais ça marche pas
 function changeQuantity(e){
 
@@ -69,7 +70,7 @@ function changeQuantity(e){
     let input = e.target;
     
     let value = input.value;
-    console.log(value);
+    
     //déclarer l'article correspondant à l'input visé
     let article = input.closest('.cart__item');
     let id = article.dataset.id;
@@ -80,7 +81,9 @@ function changeQuantity(e){
     //chercher ce que ça veut dire
     items.forEach((item, index) => {
         if(item.id == id && item.color == color){
+            console.log(item, index);
             item[index].quantity = value;
+            
         }
     });
     saveCart(items);

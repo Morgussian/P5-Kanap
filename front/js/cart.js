@@ -142,10 +142,14 @@ function totalCartProducts(){
     let total = 0;
     for(let product of cart){
         total += product.quantity;
-           
+        
     }
     return total;
 }
+
+
+        
+let quantityOf = document.querySelector('.itemQuantity');
 
 /**@function cartPrice */
 //prix total du panier ça marche pas
@@ -153,18 +157,19 @@ function cartPrice(){
     let listProducts = getCart();
     let totalPrice = 0;
     for (let product of listProducts){
-        
-        let quantityOf = product.quantity;
+
+        let quantityOf = document.querySelector('.itemQuantity').value;
         fetch("http://localhost:3000/api/products/" + product.id)
         .then (data => data.json())
         .then (jsonProduct => {
             product = new Product(jsonProduct);
-            totalPrice = quantityOf * product.price;
-            console.log(product.price);
+            totalPrice += (quantityOf * product.price);
+            
         });
     
     }
     return totalPrice;
+    
 }
 
 let totalQuantity = document.getElementById('totalQuantity');
