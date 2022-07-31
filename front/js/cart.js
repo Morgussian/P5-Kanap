@@ -125,18 +125,15 @@ function insertToCart(){
             //mettre suppression dans réglages
             settings.appendChild(suppression);
 
+            //insérer le prix total mais ça marche pas
+            let totalPrice = document.getElementById('totalPrice');
+            //il refuse de mettre autre chose que zero alors que la valeur est bonne.
+            totalPrice.innerText = fullCartPrice;
         });
         //insérer l'article généré dans la section cart_items
         let cartItems = document.getElementById('cart__items');
         cartItems.appendChild(article);
-        
-        //insérer le prix total mais ça marche pas
-        let totalPrice = document.getElementById('totalPrice');
-        //il refuse de mettre autre chose que zero alors que la valeur est bonne.
-        totalPrice.innerText = fullCartPrice;
     }
-    
-    
 }
 
 
