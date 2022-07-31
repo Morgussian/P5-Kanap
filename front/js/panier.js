@@ -36,9 +36,7 @@ function addToCart(item){
 function kill(btn){
 
     //confirm affiche un popup avec ok ou annuler
-    if( confirm('Ce produit sera supprimé du panier'))
-
-    {
+    if( confirm ('Ce produit sera supprimé du panier')){
         let article = btn.closest('.cart__item');
         let id = article.dataset.id;
         let color = article.dataset.color;
@@ -76,16 +74,57 @@ function changeQuantity(e){
     let id = article.dataset.id;
     let color = article.dataset.color;
 
+    //pour mettre à jour le localStorage?
     let items = getCart();
 
     //chercher ce que ça veut dire
     items.forEach((item, index) => {
         if(item.id == id && item.color == color){
-            console.log(item, index);
-            item[index].quantity = value;
-            
+            items[index].quantity = parseInt(value);
         }
     });
+    //recharger la page pour Update le prix panier
+    //window.location.reload();
+    
     saveCart(items);
     totalQuantity.textContent = totalCartProducts();
+    updateFullCartPrice()
+}
+
+function updateFullCartPrice(){
+    
+    let cart = getCart();
+    for (let product of cart){
+        
+        let total = 0;
+        let quantity = product.quantity;
+        
+        fetch("http://localhost:3000/api/products/" + product.id)
+        .then (data => data.json())
+        .then (jsonProduct => {
+            product = new Product(jsonProduct);
+            console.log(product.at(5)); 
+            let price = product.price;
+            
+        });
+
+            
+            total += price * quantity;
+            
+            let totalPrice = document.getElementById('totalPrice');
+            totalPrice.innerText = total;
+        
+    }
+}
+
+function getAPrice(productId){
+    let price;
+    fetch("http://localhost:3000/api/products/" + productId)
+        .then (data => data.json())
+        .then (jsonProduct => {
+            product = new Product(jsonProduct);
+            price = product.price;
+        })
+        
+        return price;
 }

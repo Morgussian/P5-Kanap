@@ -30,7 +30,8 @@ function insertToCart(){
         input.setAttribute('max', '100');
         input.setAttribute('value', product.quantity);
 
-        //surtout pas de parenthèses à la fonction ça casse tout. de toutes façons ça marche pas
+        //updater la quantité.
+        //surtout pas de parenthèses à la fonction ça casse tout.
         input.addEventListener('change', changeQuantity);
 
         //couleur choisie
@@ -64,7 +65,7 @@ function insertToCart(){
 
             //mettre le produit quantité par prix mais il refuse de sortir la valeur
             fullCartPrice += input.value * product.price;
-            console.log(fullCartPrice);
+            //console.log(fullCartPrice);
             //ajouter à article
             article.appendChild(imgContainer);
 
@@ -125,9 +126,9 @@ function insertToCart(){
             //mettre suppression dans réglages
             settings.appendChild(suppression);
 
-            //insérer le prix total mais ça marche pas
+            //insérer le prix total
             let totalPrice = document.getElementById('totalPrice');
-            //il refuse de mettre autre chose que zero alors que la valeur est bonne.
+            
             totalPrice.innerText = fullCartPrice;
         });
         //insérer l'article généré dans la section cart_items
@@ -153,25 +154,11 @@ function totalCartProducts(){
     return total;
 }
 
-/**@function produit */
-function priceByQuantity(num1, num2){
-    return num1 * num2;
-}
-        
-/**@function cartPrice */
-//prix total du panier ça marche pas
-function cartPrice(quantity, price){
-    let fullcartPrice;
-    fullcartPrice += quantity * price;
-    return fullcartPrice;
-}
-
-
+       
 let totalQuantity = document.getElementById('totalQuantity');
 totalQuantity.textContent = totalCartProducts();
 
-//attention! si cartPrice est placé plus haut totalCartProducts ne marche plus
-//cartPrice();
+
 
 
 
