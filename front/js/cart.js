@@ -5,9 +5,11 @@
 function insertToCart(){
     let cart = getCart();
 
+    //prix total du panier
+    let fullCartPrice = 0;
      
     for (let product of cart){
-
+        
         //récupération des éléments "product.X" provenant du panier: couleur, quantité
 
         //article
@@ -15,6 +17,8 @@ function insertToCart(){
         article.setAttribute('class', 'cart__item');
         article.setAttribute('data-id', product.id);
         article.setAttribute('data-color', product.color);
+
+        
 
         //Quantité dans l'input
         let input = document.createElement('input');
@@ -26,6 +30,7 @@ function insertToCart(){
         input.setAttribute('max', '100');
         input.setAttribute('value', product.quantity);
 
+        //surtout pas de parenthèses à la fonction ça casse tout. de toutes façons ça marche pas
         input.addEventListener('change', changeQuantity);
 
         //couleur choisie
@@ -56,7 +61,10 @@ function insertToCart(){
             
             let price = document.createElement('p');
             price.textContent = product.price + ' \u20AC';
-            
+
+            //mettre le produit quantité par prix mais il refuse de sortir la valeur
+            fullCartPrice += input.value * product.price;
+            console.log(fullCartPrice);
             //ajouter à article
             article.appendChild(imgContainer);
 
@@ -108,7 +116,7 @@ function insertToCart(){
             
             //ecouter le btn
             deleteButton.addEventListener('click', function(){
-                kill(deleteButton);
+            kill(deleteButton);
             });
 
             //insérer le bouton dans son container
@@ -117,23 +125,24 @@ function insertToCart(){
             //mettre suppression dans réglages
             settings.appendChild(suppression);
 
-            //insérer le prix total mais ça marche pas
-            let totalPrice = document.getElementById('totalPrice');
-            totalPrice.textContent = cartPrice();
         });
         //insérer l'article généré dans la section cart_items
         let cartItems = document.getElementById('cart__items');
         cartItems.appendChild(article);
-
-        //changer la quantité ça marche pas
         
-        
+        //insérer le prix total mais ça marche pas
+        let totalPrice = document.getElementById('totalPrice');
+        //il refuse de mettre autre chose que zero alors que la valeur est bonne.
+        totalPrice.innerText = fullCartPrice;
     }
+    
+    
 }
 
 
 
 insertToCart();
+
 
 /**@function totalCartProducts */
 //quantité d'articles dans le panier mais pas si on modifie les inputs dans la page cart.html
@@ -147,35 +156,25 @@ function totalCartProducts(){
     return total;
 }
 
-
+/**@function produit */
+function priceByQuantity(num1, num2){
+    return num1 * num2;
+}
         
-let quantityOf = document.querySelector('.itemQuantity');
-
 /**@function cartPrice */
 //prix total du panier ça marche pas
-function cartPrice(){
-    let listProducts = getCart();
-    let totalPrice = 0;
-    for (let product of listProducts){
-
-        let quantityOf = document.querySelector('.itemQuantity').value;
-        fetch("http://localhost:3000/api/products/" + product.id)
-        .then (data => data.json())
-        .then (jsonProduct => {
-            product = new Product(jsonProduct);
-            totalPrice += (quantityOf * product.price);
-            
-        });
-    
-    }
-    return totalPrice;
-    
+function cartPrice(quantity, price){
+    let fullcartPrice;
+    fullcartPrice += quantity * price;
+    return fullcartPrice;
 }
+
 
 let totalQuantity = document.getElementById('totalQuantity');
 totalQuantity.textContent = totalCartProducts();
 
-
+//attention! si cartPrice est placé plus haut totalCartProducts ne marche plus
+//cartPrice();
 
 
 
