@@ -44,3 +44,50 @@ function addRegexListenerToFormInputs() {
 addRegexListenerToFormInputs()
 
 
+//fichier panier.js
+/**@function pour update le prix panier mais ça marche pas */
+function updateFullCartPrice(){
+    
+    let cart = getCart();
+    for (let product of cart){
+        
+        let total = 0;
+        let quantity = product.quantity;
+        
+        fetch("http://localhost:3000/api/products/" + product.id)
+        .then (data => data.json())
+        .then (jsonProduct => {
+            product = new Product(jsonProduct);
+            let price = product.price;
+        });
+        total += price * quantity;
+        
+        let totalPrice = document.getElementById('totalPrice');
+        totalPrice.innerText = total;
+        
+    }
+}
+
+/**@function pour update le prix panier mais ça marche pas */
+function updateFullCartPrice(products){
+    
+    let cart = getCart();
+
+    for (let item of cart){
+        var itemPrice = 0;
+        products.forEach((product) => {
+
+            if (product._id == item.id){
+                var total = 0;
+                let quantity = item.quantity;
+                let price = product.price;
+                
+                total += price * quantity;
+                
+            }
+            console.log(total);
+            let totalPrice = document.getElementById('totalPrice');
+            totalPrice.innerText = total;
+        });
+    }
+}

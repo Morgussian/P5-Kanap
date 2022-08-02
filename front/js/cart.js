@@ -1,145 +1,186 @@
 
+//var totalPrice = 0;
 
-/**@function insertToCart */
-//créér des éléments dans le DOM comme ce qui est commenté dans cart.html
-function insertToCart(){
-    let cart = getCart();
 
-    //prix total du panier
-    let fullCartPrice = 0;
-     
-    for (let product of cart){
-        
-        //récupération des éléments "product.X" provenant du panier: couleur, quantité
+//appel de tous les produits dans l'API. product = objet de l'API
+fetch("http://localhost:3000/api/products")
+.then (data => data.json())
+.then ( products => {
 
-        //article
-        let article = document.createElement('article');
-        article.setAttribute('class', 'cart__item');
-        article.setAttribute('data-id', product.id);
-        article.setAttribute('data-color', product.color);
+    //première mise à jour du prix panier
+    updateFullCartPrice(products);
+
+    //appel du panier. item = objet du panier
+    getCart().forEach(item => {
 
         
+        products.forEach((product) => {
+            if (product._id == item.id){
+                
+                
+                
+                // DOM
+                
+                //récupération des éléments "item.X" provenant du panier: couleur, quantité
 
-        //Quantité dans l'input
-        let input = document.createElement('input');
-        
-        input.setAttribute('type', 'number');
-        input.setAttribute('class', 'itemQuantity');
-        input.setAttribute('name', 'itemQuantity');
-        input.setAttribute('min', '1');
-        input.setAttribute('max', '100');
-        input.setAttribute('value', product.quantity);
+                //article
+                let article = document.createElement('article');
+                article.setAttribute('class', 'cart__item');
+                article.setAttribute('data-id', item.id);
+                article.setAttribute('data-color', item.color);
 
-        //updater la quantité.
-        //surtout pas de parenthèses à la fonction ça casse tout.
-        input.addEventListener('change', changeQuantity);
+                //Quantité dans l'input
+                let input = document.createElement('input');
+                
+                input.setAttribute('type', 'number');
+                input.setAttribute('class', 'itemQuantity');
+                input.setAttribute('name', 'itemQuantity');
+                input.setAttribute('min', '1');
+                input.setAttribute('max', '100');
+                input.setAttribute('value', item.quantity);
 
-        //couleur choisie
-        let color = document.createElement('p');
-        color.textContent += product.color;
+                //calcul prix total
+                //totalPrice += product.price * item.quantity;
+                
+                //updater la quantité.
+                //surtout pas de parenthèses à la fonction ça casse tout.
+                input.addEventListener('change', function(e) {
+                    changeQuantity(e, products); 
+                });
 
-        
-        //récupération des éléments "product.X" provenant du localStorage: imageUrl, name, altTxt, price
-        fetch("http://localhost:3000/api/products/" + product.id)
-        .then (data => data.json())
-        .then (jsonProduct => {
-            product = new Product(jsonProduct);
+                //couleur choisie
+                let color = document.createElement('p');
+                color.textContent += item.color;
+                               
 
-            //container de la photo
-            let imgContainer = document.createElement('div');
-            imgContainer.setAttribute('class', 'cart__item__img');
+                ////récupération des éléments "product.X" provenant du localStorage: imageUrl, name, altTxt, price
+                
+                //container de la photo
+                let imgContainer = document.createElement('div');
+                imgContainer.setAttribute('class', 'cart__item__img');
+                
+                //photo
+                let img = document.createElement('img');
+                img.setAttribute('src', product.imageUrl);
+                img.setAttribute('alt', product.altTxt);
+                
+                //ajouter au container
+                imgContainer.appendChild(img);
+                
+                let name = document.createElement('h2');
+                name.textContent += product.name;
+                
+                let price = document.createElement('p');
+                price.textContent = product.price + ' \u20AC';
+                
+                //ajouter à article
+                article.appendChild(imgContainer);
+                
+                //container des infos
+                let dataContainer = document.createElement('div');
+                dataContainer.setAttribute('class', 'cart__item__content');
 
-            //photo
-            let img = document.createElement('img');
-            img.setAttribute('src', product.imageUrl);
-            img.setAttribute('alt', product.altTxt);
+                //ajouter à article
+                article.appendChild(dataContainer);
 
-            //ajouter au container
-            imgContainer.appendChild(img);
+                //description: nom, couleur, prix
+                let descriptionContainer = document.createElement('div');
+                descriptionContainer.setAttribute('class', 'cart__item__content__description');
 
-            let name = document.createElement('h2');
-            name.textContent += product.name;
-            
-            let price = document.createElement('p');
-            price.textContent = product.price + ' \u20AC';
+                descriptionContainer.appendChild(name);
+                descriptionContainer.appendChild(color);
+                descriptionContainer.appendChild(price);
 
-            //mettre le produit quantité par prix mais il refuse de sortir la valeur
-            fullCartPrice += input.value * product.price;
-            //console.log(fullCartPrice);
-            //ajouter à article
-            article.appendChild(imgContainer);
+                //ajouter à dataContainer
+                dataContainer.appendChild(descriptionContainer);
 
-            //container des infos
-            let dataContainer = document.createElement('div');
-            dataContainer.setAttribute('class', 'cart__item__content');
+                //container des réglages
+                let settings = document.createElement('div');
+                settings.setAttribute('class', 'cart__item__content__settings');
 
-            //ajouter à article
-            article.appendChild(dataContainer);
+                //ajouter à dataContainer
+                dataContainer.appendChild(settings);
 
-            //description: nom, couleur, prix
-            let descriptionContainer = document.createElement('div');
-            descriptionContainer.setAttribute('class', 'cart__item__content__description');
+                //réglage quantité
+                let quantity = document.createElement('div');
+                quantity.setAttribute('class', 'cart__item__content__settings__quantity');
 
-            descriptionContainer.appendChild(name);
-            descriptionContainer.appendChild(color);
-            descriptionContainer.appendChild(price);
+                let number = document.createElement('p');
+                number.textContent = 'Qté : '
 
-            //ajouter à dataContainer
-            dataContainer.appendChild(descriptionContainer);
+                quantity.appendChild(number);
+                quantity.appendChild(input);
 
-            //container des réglages
-            let settings = document.createElement('div');
-            settings.setAttribute('class', 'cart__item__content__settings');
+                //mettre quantity dans réglages
+                settings.appendChild(quantity);
+                
+                //suppression de l'item
+                let suppression = document.createElement('div');
+                suppression.setAttribute('class', 'cart__item__content__settings__delete');
 
-            //ajouter à dataContainer
-            dataContainer.appendChild(settings);
+                let deleteButton = document.createElement('p');
+                deleteButton.textContent = 'Supprimer';
+                deleteButton.setAttribute('class', 'deleteItem');
+                
+                //ecouter le btn
+                deleteButton.addEventListener('click', function(){
+                kill(deleteButton);
+                });
 
-            //réglage quantité
-            let quantity = document.createElement('div');
-            quantity.setAttribute('class', 'cart__item__content__settings__quantity');
+                //insérer le bouton dans son container
+                suppression.appendChild(deleteButton);
 
-            let number = document.createElement('p');
-            number.textContent = 'Qté : '
+                //mettre suppression dans réglages
+                settings.appendChild(suppression);
 
-            quantity.appendChild(number);
-            quantity.appendChild(input);
+                //insérer l'article généré dans la section cart_items
+                let cartItems = document.getElementById('cart__items');
+                cartItems.appendChild(article);
 
-            //mettre quantity dans réglages
-            settings.appendChild(quantity);
-            
-            //suppression de l'item
-            let suppression = document.createElement('div');
-            suppression.setAttribute('class', 'cart__item__content__settings__delete');
-
-            let deleteButton = document.createElement('p');
-            deleteButton.textContent = 'Supprimer';
-            deleteButton.setAttribute('class', 'deleteItem');
-            
-            //ecouter le btn
-            deleteButton.addEventListener('click', function(){
-            kill(deleteButton);
-            });
-
-            //insérer le bouton dans son container
-            suppression.appendChild(deleteButton);
-
-            //mettre suppression dans réglages
-            settings.appendChild(suppression);
-
-            //insérer le prix total
-            let totalPrice = document.getElementById('totalPrice');
-            
-            totalPrice.innerText = fullCartPrice;
+                
+            }
         });
-        //insérer l'article généré dans la section cart_items
-        let cartItems = document.getElementById('cart__items');
-        cartItems.appendChild(article);
-    }
-}
+
+    });
+
+    
+
+})
+
+.catch(function(err) {
+  // Une erreur est survenue
+});
 
 
 
-insertToCart();
+// /**@function insertToCart */
+// //créér des éléments dans le DOM comme ce qui est commenté dans cart.html
+// function insertToCart(){
+//     let cart = getCart();
+
+//     //prix total du panier
+//     let fullCartPrice = 0;
+     
+//     for (let product of cart){
+        
+        
+
+        
+//         //récupération des éléments "product.X" provenant du localStorage: imageUrl, name, altTxt, price
+//         fetch("http://localhost:3000/api/products/" + product.id)
+//         .then (data => data.json())
+//         .then (jsonProduct => {
+//             product = new Product(jsonProduct);
+
+            
+//         });
+        
+//     }
+// }
+
+
+
+//insertToCart();
 
 
 /**@function totalCartProducts */

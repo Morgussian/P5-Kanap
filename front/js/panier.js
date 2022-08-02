@@ -63,7 +63,7 @@ function kill(btn){
 
 /**@function changeQuantity */
 //update le nombre d'articles si la quantité change.
-function changeQuantity(e){
+function changeQuantity(e, products){
 
     //renvoie l'élément HTML (on vise ici <input>)
     let input = e.target;
@@ -89,32 +89,31 @@ function changeQuantity(e){
     
     saveCart(items);
     totalQuantity.textContent = totalCartProducts();
-    updateFullCartPrice()
+    updateFullCartPrice(products);
 }
 
-/**@function pour update le prix panier mais ça marche pas */
-function updateFullCartPrice(){
+/**@function pour update le prix panier*/
+function updateFullCartPrice(products){
     
     let cart = getCart();
-    for (let product of cart){
-        
-        let total = 0;
-        let quantity = product.quantity;
-        
-        fetch("http://localhost:3000/api/products/" + product.id)
-        .then (data => data.json())
-        .then (jsonProduct => {
-            product = new Product(jsonProduct);
-            let price = product.price;
+    let total = 0;
+
+    for (let item of cart){
+
+       
+
+        products.forEach((product) => {
+
+            if (product._id == item.id){
+                let itemPrice = product.price * item.quantity;
+                total += itemPrice;
+            }
+            
+            let totalPrice = document.getElementById('totalPrice');
+            totalPrice.innerText = total;
         });
-        total += price * quantity;
-        
-        let totalPrice = document.getElementById('totalPrice');
-        totalPrice.innerText = total;
-        
     }
 }
-
 /**@function pour appeler le prix d'un produit mais ça marche pas */
 function getAPrice(productId){
     let price;
