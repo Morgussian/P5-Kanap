@@ -45,6 +45,7 @@ function kill(btn){
 
         items.forEach((item, index) => {
             if (item.id == id && item.color == color){
+                //retire 1 item du array à l'index spécifié.
                 items.splice(index, 1);
             }
             
@@ -61,12 +62,11 @@ function kill(btn){
 }
 
 /**@function changeQuantity */
-//si la quantité change mais ça marche pas
+//update le nombre d'articles si la quantité change.
 function changeQuantity(e){
 
     //renvoie l'élément HTML (on vise ici <input>)
     let input = e.target;
-    
     let value = input.value;
     
     //déclarer l'article correspondant à l'input visé
@@ -83,6 +83,7 @@ function changeQuantity(e){
             items[index].quantity = parseInt(value);
         }
     });
+
     //recharger la page pour Update le prix panier
     //window.location.reload();
     
@@ -91,6 +92,7 @@ function changeQuantity(e){
     updateFullCartPrice()
 }
 
+/**@function pour update le prix panier mais ça marche pas */
 function updateFullCartPrice(){
     
     let cart = getCart();
@@ -103,26 +105,23 @@ function updateFullCartPrice(){
         .then (data => data.json())
         .then (jsonProduct => {
             product = new Product(jsonProduct);
-            console.log(product.at(5)); 
             let price = product.price;
-            
         });
-
-            
-            total += price * quantity;
-            
-            let totalPrice = document.getElementById('totalPrice');
-            totalPrice.innerText = total;
+        total += price * quantity;
+        
+        let totalPrice = document.getElementById('totalPrice');
+        totalPrice.innerText = total;
         
     }
 }
 
+/**@function pour appeler le prix d'un produit mais ça marche pas */
 function getAPrice(productId){
     let price;
     fetch("http://localhost:3000/api/products/" + productId)
         .then (data => data.json())
         .then (jsonProduct => {
-            product = new Product(jsonProduct);
+            let product = new Product(jsonProduct);
             price = product.price;
         })
         

@@ -7,3 +7,8 @@ let url = new URL(str);
 let orderId = url.searchParams.get("orderId");
 
 idContainer.innerText = orderId;
+
+if(orderId = 'undefined'){
+    let msg = document.querySelector('.confirmation p');
+    msg.innerText = 'Cette commande est déjà effectuée'
+}

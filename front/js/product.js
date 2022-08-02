@@ -73,10 +73,7 @@ fetch("http://localhost:3000/api/products/" + id)
   // Une erreur est survenue
 });
 
-//ecouter l'évènement clic sur "ajouter au panier" et envoyer les données au localStorage
-let addButton = document.querySelector("#addToCart");
-addButton.addEventListener('click', function(){
-
+function addChoice(){
     //variables qui constitueront l'objet choice
     let choice = {};
     //la couleur est renvoyée par une fonction
@@ -103,7 +100,10 @@ addButton.addEventListener('click', function(){
     alert ('Sélection enregistrée.');
     
     }
-});
+}
+//ecouter l'évènement clic sur "ajouter au panier" et envoyer les données au localStorage
+let addButton = document.querySelector("#addToCart");
+addButton.addEventListener('click', addChoice);
 
 
 

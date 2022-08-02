@@ -149,7 +149,6 @@ function totalCartProducts(){
     let total = 0;
     for(let product of cart){
         total += product.quantity;
-        
     }
     return total;
 }
