@@ -14,7 +14,7 @@ function getCart(){
         return JSON.parse(cartStrng);
     }
 }
-/**@function saveToCart */
+/**@function addToCart */
 //ajoute un produit au panier 
 function addToCart(item){
 
@@ -33,7 +33,7 @@ function addToCart(item){
 }
 /**@param function btn */
 //retirer un produit du panier 
-function kill(btn){
+function kill(btn, products){
 
     //confirm affiche un popup avec ok ou annuler
     if( confirm ('Ce produit sera supprimé du panier')){
@@ -53,11 +53,14 @@ function kill(btn){
         //stocker nouveau array
         saveCart(items);
 
+        updateFullCartPrice(products);
+
         //retirer l'article du DOM
         article.remove();
-
+        
         //rectifier la quantité totale affichée
         totalQuantity.textContent = totalCartProducts();
+        
     }
 }
 
@@ -84,9 +87,6 @@ function changeQuantity(e, products){
         }
     });
 
-    //recharger la page pour Update le prix panier
-    //window.location.reload();
-    
     saveCart(items);
     totalQuantity.textContent = totalCartProducts();
     updateFullCartPrice(products);
@@ -94,35 +94,21 @@ function changeQuantity(e, products){
 
 /**@function pour update le prix panier*/
 function updateFullCartPrice(products){
-    
+
+    let totalPrice = document.getElementById('totalPrice');
     let cart = getCart();
+    
     let total = 0;
-
+    
     for (let item of cart){
-
-       
-
         products.forEach((product) => {
 
             if (product._id == item.id){
-                let itemPrice = product.price * item.quantity;
-                total += itemPrice;
+                 
+                total += product.price * item.quantity;
             }
-            
-            let totalPrice = document.getElementById('totalPrice');
             totalPrice.innerText = total;
         });
     }
-}
-/**@function pour appeler le prix d'un produit mais ça marche pas */
-function getAPrice(productId){
-    let price;
-    fetch("http://localhost:3000/api/products/" + productId)
-        .then (data => data.json())
-        .then (jsonProduct => {
-            let product = new Product(jsonProduct);
-            price = product.price;
-        })
-        
-        return price;
+    
 }

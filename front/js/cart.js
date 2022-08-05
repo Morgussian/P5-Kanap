@@ -124,7 +124,7 @@ fetch("http://localhost:3000/api/products")
                 
                 //ecouter le btn
                 deleteButton.addEventListener('click', function(){
-                kill(deleteButton);
+                kill(deleteButton, products);
                 });
 
                 //insérer le bouton dans son container
