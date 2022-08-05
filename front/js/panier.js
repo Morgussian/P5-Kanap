@@ -53,14 +53,12 @@ function kill(btn, products){
         //stocker nouveau array
         saveCart(items);
 
-        updateFullCartPrice(products);
-
         //retirer l'article du DOM
         article.remove();
         
         //rectifier la quantité totale affichée
         totalQuantity.textContent = totalCartProducts();
-        
+        updateFullCartPrice(products);
     }
 }
 
@@ -100,15 +98,18 @@ function updateFullCartPrice(products){
     
     let total = 0;
     
-    for (let item of cart){
-        products.forEach((product) => {
+    //si le panier n'est pas vide:
+    if(cart !== []){
+        for (let item of cart){
+            products.forEach((product) => {
 
-            if (product._id == item.id){
-                 
-                total += product.price * item.quantity;
-            }
-            totalPrice.innerText = total;
-        });
+                if (product._id == item.id){
+                    
+                    total += product.price * item.quantity;
+                }
+                totalPrice.innerText = total;
+            });
+        }
     }
-    
+    totalPrice.innerText = total;
 }

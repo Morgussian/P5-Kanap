@@ -48,6 +48,10 @@ function RedirectionJavascript(id){
 form.addEventListener('submit', async function(e){
     e.preventDefault()
     user = this.user
+    
+    if (totalQuantity.textContent == 0){
+        alert ('Votre panier est vide.');
+    }else{
     let response = await fetch('http://localhost:3000/api/products/order', {
         method: 'POST',
         headers: {
@@ -62,8 +66,6 @@ form.addEventListener('submit', async function(e){
     })
 
     //récupérer un orderId en réponse
-    //pas la peine de refaire un fetch:
-    //let fetchOrderId = fetch('http://localhost:3000/api/products/order')
     .then(function(response){
 
     return response.json()
@@ -75,7 +77,8 @@ form.addEventListener('submit', async function(e){
         }else{
             alert('Tous les champs n\'ont pas été correctement saisis'); 
         }
-  });   
+  });
+}
 });
 
 //'blur' sur un évènement c'est quand le focus se met sur un autre élément...
