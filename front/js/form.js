@@ -1,7 +1,17 @@
-//'use strict'; Non, ça invalide le bouton submit
+/**
+* Ce fichier fait partie du projet KANAP.
+*
+* Il gère le formulaire
+*
+* l'utilisateur peut remplir les champs et valider sa commande
+*
+* @copyright 2022 Morgussian
+*/
 
-/**@class User */
-// construire une class user avec les inputs du formulaire
+/**
+* La classe user permet de construire un objet contact.
+*
+*/
 class User {
     constructor(firstName, lastName, email, address, city) {
         this.firstName = firstName
@@ -34,9 +44,14 @@ const nameCityReg = new RegExp('[a-z-\']+' , 'i');
 const addressReg = new RegExp(/^[a-zA-Z0-9\s,'-]*$/);
 
 //regexp pour le mail
-const mailReg = new RegExp (/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i);
+const mailReg = new RegExp (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
 
-//redirection vers la page confirmation.
+ /**
+* dirige l'utilisateur vers la page confirmation.html
+*
+* @param id un numéro de commande
+*
+*/
 function RedirectionJavascript(id){
     document.location.href=`../html/confirmation.html?orderId=${id}`
 }
@@ -44,15 +59,16 @@ function RedirectionJavascript(id){
 
 
 /**@addEventListener */
-//methode post envoyer user et panier et récupérer orderId
+//methode post: envoyer user et panier et récupérer orderId
 form.addEventListener('submit', async function(e){
     e.preventDefault()
     user = this.user
     
+    //Si aucun produit dans le panier:
     if (totalQuantity.textContent == 0){
         alert ('Votre panier est vide.');
     }else{
-    let response = await fetch('http://localhost:3000/api/products/order', {
+        let response = await fetch('http://localhost:3000/api/products/order', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
@@ -60,7 +76,7 @@ form.addEventListener('submit', async function(e){
         body: JSON.stringify({
             contact: user,
             products: getCart().map(function(product){ 
-                return product.id;
+            return product.id;
             })
         })
     })
@@ -89,69 +105,73 @@ form.city.addEventListener('blur', checkCity);
 form.address.addEventListener('blur', checkAddress);
 form.email.addEventListener('blur', checkEmail);
 
-//valider le prénom
-/**@function checkFirstName */
+ /**
+* valide le prénom par un message d'erreur vide
+*
+*
+*/
 function checkFirstName(){
     const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
     firstNameErrorMsg.innerText = '';
     
     if(!nameCityReg.test(form.firstName.value)) {
         firstNameErrorMsg.innerText = 'Champ invalide';
-        
-    }else{
-        
     }
 }
 
-//valider le nom
-/**@function checkLastName */
+ /**
+* valide le nom par un message d'erreur vide
+*
+*
+*/
 function checkLastName(){
     const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
     lastNameErrorMsg.innerText = '';
        
     if(!nameCityReg.test(form.lastName.value)) {
         lastNameErrorMsg.innerText = 'Champ invalide';
-    }else{
-        
     }
 }
 
-//valider la ville
-/**@function checkCity */
+ /**
+* valide la ville par un message d'erreur vide
+*
+*
+*/
 function checkCity(){
     const cityErrorMsg = document.getElementById('cityErrorMsg');
     cityErrorMsg.innerText = '';
        
     if(!nameCityReg.test(form.city.value)) {
         cityErrorMsg.innerText = 'Champ invalide';
-    }else{
-        
     }
 }
 
-//valider l'adresse
-/**@function checkAddress */
+ /**
+* valide l'adresse par un message d'erreur vide
+*
+*
+*/
 function checkAddress(){
     const addressErrorMsg = document.getElementById('addressErrorMsg');
     addressErrorMsg.innerText = '';
       
     if(!addressReg.test(form.address.value)) {
         addressErrorMsg.innerText = 'Champ invalide';
-    }else{
-        
     }
 }
 
-//valider l'email
-/**@function checkEmail */
+ /**
+* valide l'email par un message d'erreur vide
+*
+*
+*/
 function checkEmail(){
     const emailErrorMsg = document.getElementById('emailErrorMsg');
     emailErrorMsg.innerText = '';
      
     if(!mailReg.test(form.email.value)) {
         emailErrorMsg.innerText = 'Champ invalide';
-    }else{
-        
     }
 }
 
@@ -166,7 +186,12 @@ form.addEventListener('change', function() {
     )
 })
 
-/**@function validAllFields */
+/**
+* Valide le formulaire
+*
+* @return boolean
+*
+*/
 function validAllFields() {
     if(firstNameErrorMsg.innerText == '' && lastNameErrorMsg.innerText == '' && cityErrorMsg.innerText == '' && addressErrorMsg.innerText == '' && emailErrorMsg.innerText == ''){
         return true;

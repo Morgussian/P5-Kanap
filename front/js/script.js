@@ -1,4 +1,12 @@
-
+/**
+* Ce fichier fait partie du projet KANAP.
+*
+* Il récupère l'ensemble des produits de l'API et insère leurs paramètres dans des cards.
+*
+* Chaque card est un lien vers une fiche produit individuelle.
+*
+* @copyright 2022 Morgussian
+*/
 
 //récupérer le array des produits
 

@@ -1,11 +1,30 @@
-/**@function saveCart */
-//sauvegarder localement la liste des produits
+/**
+* Ce fichier fait partie du projet KANAP.
+*
+* Il gère le stockage et la mise à jour du panier en fonction de la page cart.html.
+*
+* l'utilisateur peut changer la quantité de chaque produit.
+*
+* @copyright 2022 Morgussian
+*/
+
+ /**
+* Sauvegarde une liste de produits dans localStorage.
+*
+* @param listProducts 
+*
+*/
 function saveCart(listProducts){
     localStorage.setItem('listProducts', JSON.stringify(listProducts));
 }
 
-/**@function getCart */
-//récupérer le panier
+ /**
+* récupère le panier de localStorage
+*
+* @return un array vide si panier vide
+* @return un array
+*
+*/
 function getCart(){
     let cartStrng = localStorage.getItem('listProducts');
     if(cartStrng == null){
@@ -14,8 +33,14 @@ function getCart(){
         return JSON.parse(cartStrng);
     }
 }
-/**@function addToCart */
-//ajoute un produit au panier 
+
+ /**
+* Ajoute un produit au panier.
+*
+* @param item un produit
+* @function saveCart
+*
+*/ 
 function addToCart(item){
 
     //récupérer le panier
@@ -31,8 +56,16 @@ function addToCart(item){
     }
     saveCart(listProducts);
 }
-/**@param function btn */
-//retirer un produit du panier 
+
+ /**
+* retire un produit du panier.
+*
+* @param btn Bouton "supprimer"
+* @param products le contenu du panier
+*
+* @function updateFullCartPrice
+*
+*/
 function kill(btn, products){
 
     //confirm affiche un popup avec ok ou annuler
@@ -48,7 +81,6 @@ function kill(btn, products){
                 //retire 1 item du array à l'index spécifié.
                 items.splice(index, 1);
             }
-            
         });
         //stocker nouveau array
         saveCart(items);
@@ -62,8 +94,17 @@ function kill(btn, products){
     }
 }
 
-/**@function changeQuantity */
-//update le nombre d'articles si la quantité change.
+ /**
+* Actualise la quantité d'un produit sur la page cart.html
+*
+* @param e evénement
+* @param products le contenu du panier
+*
+* @function saveCart 
+*
+* @function updateFullCartPrice
+*
+*/
 function changeQuantity(e, products){
 
     //renvoie l'élément HTML (on vise ici <input>)
@@ -78,7 +119,7 @@ function changeQuantity(e, products){
     //pour mettre à jour le localStorage?
     let items = getCart();
 
-    //chercher ce que ça veut dire
+    //actualise la quantité d'un article dans le panier en cherchant par ID et couleur
     items.forEach((item, index) => {
         if(item.id == id && item.color == color){
             items[index].quantity = parseInt(value);
@@ -90,7 +131,12 @@ function changeQuantity(e, products){
     updateFullCartPrice(products);
 }
 
-/**@function pour update le prix panier*/
+ /**
+* Actualise le prix total
+*
+* @param products le contenu du panier
+*
+*/
 function updateFullCartPrice(products){
 
     let totalPrice = document.getElementById('totalPrice');
@@ -98,16 +144,12 @@ function updateFullCartPrice(products){
     
     let total = 0;
     
-    //si le panier n'est pas vide:
     if(cart !== []){
         for (let item of cart){
             products.forEach((product) => {
-
                 if (product._id == item.id){
-                    
                     total += product.price * item.quantity;
                 }
-                totalPrice.innerText = total;
             });
         }
     }

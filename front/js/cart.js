@@ -1,5 +1,12 @@
-
-//var totalPrice = 0;
+/**
+* Ce fichier fait partie du projet KANAP.
+*
+* Il affiche une page panier avec tous les produits sélectionnés.
+*
+* l'utilisateur peut changer la quantité de chaque produit.
+*
+* @copyright 2022 Morgussian
+*/
 
 
 //appel de tous les produits dans l'API. product = objet de l'API
@@ -43,7 +50,6 @@ fetch("http://localhost:3000/api/products")
                 //totalPrice += product.price * item.quantity;
                 
                 //updater la quantité.
-                //surtout pas de parenthèses à la fonction ça casse tout.
                 input.addEventListener('change', function(e) {
                     changeQuantity(e, products); 
                 });
@@ -136,55 +142,20 @@ fetch("http://localhost:3000/api/products")
                 //insérer l'article généré dans la section cart_items
                 let cartItems = document.getElementById('cart__items');
                 cartItems.appendChild(article);
-
-                
             }
         });
-
     });
-
-    
-
 })
 
 .catch(function(err) {
   // Une erreur est survenue
 });
 
-
-
-// /**@function insertToCart */
-// //créér des éléments dans le DOM comme ce qui est commenté dans cart.html
-// function insertToCart(){
-//     let cart = getCart();
-
-//     //prix total du panier
-//     let fullCartPrice = 0;
-     
-//     for (let product of cart){
-        
-        
-
-        
-//         //récupération des éléments "product.X" provenant du localStorage: imageUrl, name, altTxt, price
-//         fetch("http://localhost:3000/api/products/" + product.id)
-//         .then (data => data.json())
-//         .then (jsonProduct => {
-//             product = new Product(jsonProduct);
-
-            
-//         });
-        
-//     }
-// }
-
-
-
-//insertToCart();
-
-
-/**@function totalCartProducts */
-//quantité d'articles dans le panier mais pas si on modifie les inputs dans la page cart.html
+/**
+*   Affiche la quantité de produits dans le panier
+*
+* @return number le nombre de produits
+*/
 function totalCartProducts(){
     let cart = getCart();
     let total = 0;

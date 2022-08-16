@@ -13,3 +13,4 @@ if(orderId == 'undefined'){
     let msg = document.querySelector('.confirmation p');
     msg.innerText = 'Cette commande est déjà effectuée'
 }
+

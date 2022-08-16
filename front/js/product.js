@@ -1,16 +1,39 @@
-//fonction pour ajouter les éléments couleurs dans le menu déroulant
+/**
+* Ce fichier fait partie du projet KANAP.
+*
+* Il affiche un produit avec photo, commentaires etc...
+*
+* l'utilisateur peut choisir une couleur et une quantité et intégrer son choix au panier.
+*
+* @copyright 2022 Morgussian
+*/
+
+ /**
+* Crée dynamiquement un objet <option>.
+*
+* @param selectbox selectbox dans product.html
+* @param text texte affiché de la couleur
+* @param value valeur de la couleur
+*
+*/
 function addOption(selectbox, text, value){
     let optn = document.createElement("option");
     optn.text = text;
     optn.value = value;
     selectbox.options.add(optn);
 }
+
 //récupérer l'id produit dans l'URL lorsque l'utilisateur arrive sur la page produit 
 let str = window.location.href;
 let url = new URL(str);
 let id = url.searchParams.get("_id");
 
-//récupérer la couleur sélectionnée
+ /**
+* récupère la couleur sélectionnée par l'utilisateur.
+*
+* @param return string
+*
+*/
 function getColor(){
     //cibler l'élément de selection colors
     let colorSelectionList = document.getElementById('colors');
@@ -73,6 +96,14 @@ fetch("http://localhost:3000/api/products/" + id)
   // Une erreur est survenue
 });
 
+ /**
+* Ajoute un produit au panier.
+*
+* @return alert si la couleur n'est pas choisie
+* @return alert si la quantité n'est pas choisie
+* @return alert si le produit est enregistré
+*
+*/
 function addChoice(){
     //variables qui constitueront l'objet choice
     let choice = {};
@@ -101,6 +132,7 @@ function addChoice(){
     
     }
 }
+
 //ecouter l'évènement clic sur "ajouter au panier" et envoyer les données au localStorage
 let addButton = document.querySelector("#addToCart");
 addButton.addEventListener('click', addChoice);
