@@ -68,7 +68,8 @@ form.addEventListener('submit', async function(e){
     if (totalQuantity.textContent == 0){
         alert ('Votre panier est vide.');
     }else{
-        let response = await fetch('http://localhost:3000/api/products/order', {
+        // en local : fetch('http://localhost:3000/api/products/order'
+        let response = await fetch('https://kanap-back-b1z4.onrender.com/api/products/order', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'

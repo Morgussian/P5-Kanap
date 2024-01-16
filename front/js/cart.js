@@ -10,7 +10,8 @@
 
 
 //appel de tous les produits dans l'API. product = objet de l'API
-fetch("http://localhost:3000/api/products")
+fetch("https://kanap-back-b1z4.onrender.com/api/products")
+// en local: fetch("http://localhost:3000/api/products")
 .then (data => data.json())
 .then ( products => {
 
