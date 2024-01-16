@@ -50,7 +50,8 @@ function getColor(){
 }
 
 //récupérer le produit et insertion des données
-fetch("http://localhost:3000/api/products/" + id)
+fetch("https://kanap-back-b1z4.onrender.com/api/products/" + id)
+// en local : fetch("http://localhost:3000/api/products/" + id)
 .then (data => data.json())
 .then (jsonProduct => {
     let product = new Product(jsonProduct);
