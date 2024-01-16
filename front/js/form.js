@@ -53,7 +53,7 @@ const mailReg = new RegExp (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
 *
 */
 function RedirectionJavascript(id){
-    document.location.href=`../html/confirmation.html?orderId=${id}`
+    document.location.href=`../confirmation.html?orderId=${id}`
 }
 
 
