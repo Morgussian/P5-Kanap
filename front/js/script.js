@@ -10,7 +10,8 @@
 
 //récupérer le array des produits
 
-fetch("http://localhost:3000/api/products")
+fetch("https://kanap-back-b1z4.onrender.com/api/products")
+// for local : fetch("http://localhost:3000/api/products")
 .then (data => data.json())
 .then (jsonListProduct => {
     for (let jsonProduct of jsonListProduct){
