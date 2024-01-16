@@ -144,7 +144,8 @@ function updateFullCartPrice(products){
     
     let total = 0;
     
-    if(cart !== []){
+    //used to be !==
+    if(cart != []){
         for (let item of cart){
             products.forEach((product) => {
                 if (product._id == item.id){
